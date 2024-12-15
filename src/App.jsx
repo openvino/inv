@@ -30,26 +30,6 @@ function App() {
 		abi: invAbi,
 	});
 
-	// 	if (account) {
-	// 		console.log(import.meta.env.VITE_INV_CONTRACT, invAbi, signer);
-
-	// 		const contractReader = new ethers.Contract(
-	// 			import.meta.env.VITE_INV_CONTRACT,
-	// 			invAbi,
-	// 			signer
-	// 		);
-	// 		console.log(
-	// 			"holaaaaaaaaaaaaaaaaaaaaaaaaaaa, contractReader",
-	// 			contractReader
-	// 		);
-	// 		console.log("holaaaaaaaaaaaaaaaaaaaaaaaaaaa, contractReader");
-
-	// 		return contractReader;
-	// 	} else {
-	// 		console.error("Wallet is not available in the current environment.");
-	// 	}
-	// };
-
 	const formSchema = z.object({
 		bodega: z
 			.string()
@@ -340,7 +320,26 @@ function App() {
 											render={({ field }) => (
 												<FormItem>
 													<FormLabel className="text-sm font-medium">
-														Zinc (mg/L)
+														Cinc (mg/L)
+													</FormLabel>
+													<FormControl>
+														<Input
+															className="w-full"
+															placeholder="Ingrese valor"
+															{...field}
+														/>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name="zinc"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel className="text-sm font-medium">
+														Acidez Volátil (g/L)
 													</FormLabel>
 													<FormControl>
 														<Input
