@@ -125,9 +125,9 @@ function App() {
 					paddingLeft: "20px",
 				}}
 			>
-				<img src="./logo.png" alt="Logo" className="h-20" />
+				<img src="./logo_inv3.png" alt="Logo" className="h-20" />
 				<h1 className="text-white text-xl ml-4 font-bold">
-					Registración de productos
+					Registro de productos
 				</h1>
 				<ConnectButton
 					client={client}
