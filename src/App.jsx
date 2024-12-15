@@ -118,35 +118,61 @@ function App() {
 		<div className="min-h-screen bg-blue-100">
 			{/* Header */}
 			<header
-				className="flex items-center flex-row justify-between px-8"
+				className="flex flex-col md:flex-row md:items-center justify-between px-8"
 				style={{
-					height: "80px",
+					height: "auto", // Para que se ajuste automáticamente a la altura del contenido
 					backgroundColor: "rgb(55, 188, 237)",
-					paddingLeft: "20px",
+					padding: "20px",
 				}}
 			>
-				<img src="./logo_inv3.png" alt="Logo" className="h-20" />
-				<h1 className="text-white text-xl ml-4 font-bold">
+				<div className="flex flex-row justify-between items-center md:justify-start md:gap-4">
+					<img src="./logo_inv3.png" alt="Logo" className="h-16 md:h-20" />
+					<div className="md:hidden">
+						<ConnectButton
+							client={client}
+							chain={defineChain(zkSyncSepolia)}
+							connectButton={{
+								label: "Conectar Wallet",
+								style: {
+									background: "rgb(55, 188, 237)",
+									color: "white",
+									fontSize: "14px",
+									padding: "8px 16px",
+									borderRadius: "6px",
+									boxShadow:
+										"0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08)",
+									cursor: "pointer",
+									border: "none",
+								},
+							}}
+						/>
+					</div>
+				</div>
+
+				<h1 className="text-white text-xl mt-4 md:mt-0 font-bold text-center">
 					Registro de productos
 				</h1>
-				<ConnectButton
-					client={client}
-					chain={defineChain(zkSyncSepolia)}
-					connectButton={{
-						label: "Conectar Wallet",
-						style: {
-							background: "rgb(55, 188, 237)",
-							color: "white",
-							fontSize: "18px",
-							padding: "10px 20px",
-							borderRadius: "8px",
-							boxShadow:
-								"0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08)",
-							cursor: "pointer",
-							border: "none",
-						},
-					}}
-				/>
+
+				<div className="hidden md:block">
+					<ConnectButton
+						client={client}
+						chain={defineChain(zkSyncSepolia)}
+						connectButton={{
+							label: "Conectar Wallet",
+							style: {
+								background: "rgb(55, 188, 237)",
+								color: "white",
+								fontSize: "18px",
+								padding: "10px 20px",
+								borderRadius: "8px",
+								boxShadow:
+									"0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08)",
+								cursor: "pointer",
+								border: "none",
+							},
+						}}
+					/>
+				</div>
 			</header>
 
 			{/* Main Content */}
