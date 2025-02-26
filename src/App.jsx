@@ -5,27 +5,22 @@ import { useForm } from "react-hook-form";
 import { Button } from "./components/ui/button";
 import {
 	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
 } from "./components/ui/form";
-import { Input } from "./components/ui/input";
-import { defineChain, zkSyncSepolia } from "thirdweb/chains";
+import { defineChain, sepolia } from "thirdweb/chains";
 import { client } from "./config/thirdwebClient";
 import { ConnectButton, useActiveAccount } from "thirdweb/react";
 import { getContract, prepareContractCall, sendTransaction } from "thirdweb";
 import { invAbi } from "./utils/abi";
 import { toast } from "react-hot-toast";
 import CryptoJS from "crypto-js";
+import CustomFormField from "./components/CustomFormField/CustomFormField";
 
 function App() {
 	const account = useActiveAccount();
 
 	const contract = getContract({
 		client: client,
-		chain: zkSyncSepolia,
+		chain: sepolia,
 		address: import.meta.env.VITE_INV_CONTRACT,
 		abi: invAbi,
 	});
@@ -44,25 +39,29 @@ function App() {
 			.min(1, { message: "El valor de arsénico es obligatorio" }),
 		plomo: z.string().min(1, { message: "El valor de plomo es obligatorio" }),
 		zinc: z.string().min(1, { message: "El valor de zinc es obligatorio" }),
+		acidoVolatil: z.string().min(1, { message: "El valor de acido volátil es obligatorio" }),
 	});
 
 	const form = useForm({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			bodega: "",
-			botella: "",
-			cobre: "",
-			cadmio: "",
-			arsenico: "",
-			plomo: "",
-			zinc: "",
+			bodega: "Costaflores",
+			botella: "MTB20",
+			cobre: "5",
+			cadmio: "5",
+			arsenico: "5",
+			plomo: "5",
+			zinc: "5",
+			acidoVolatil: "5",
 		},
 	});
 	const generateHash = (data) => {
 		const concatenatedData = `${data.botella}&${data.bodega}&${data.cobre}&${data.cadmio}&${data.plomo}&${data.arsenico}&${data.zinc}`;
 
-		const hash = CryptoJS.SHA256(concatenatedData).toString(CryptoJS.enc.Hex);
+		console.log(concatenatedData);
 
+
+		const hash = CryptoJS.SHA256(concatenatedData).toString(CryptoJS.enc.Hex);
 		return `0x${hash}`;
 	};
 
@@ -74,18 +73,15 @@ function App() {
 			console.log("ID generado:", id);
 			console.log("Hash generado:", hash);
 			console.log("CONTRACT:", contract);
-
 			const transaction = prepareContractCall({
 				contract,
 				method: "storeData",
 				params: [id, hash],
 			});
-
 			const { transactionHash } = await sendTransaction({
 				account,
 				transaction,
 			});
-
 			console.log("Transacción enviada:", transactionHash);
 			toast.success("Datos registrados correctamente en la blockchain.");
 		} catch (error) {
@@ -110,7 +106,7 @@ function App() {
 					<div className="md:hidden">
 						<ConnectButton
 							client={client}
-							chain={defineChain(zkSyncSepolia)}
+							chain={defineChain(sepolia)}
 							connectButton={{
 								label: "Conectar Wallet",
 								style: {
@@ -136,7 +132,7 @@ function App() {
 				<div className="hidden md:block">
 					<ConnectButton
 						client={client}
-						chain={defineChain(zkSyncSepolia)}
+						chain={defineChain(sepolia)}
 						connectButton={{
 							label: "Conectar Wallet",
 							style: {
@@ -160,7 +156,7 @@ function App() {
 				<div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
 					<ConnectButton
 						client={client}
-						chain={defineChain(zkSyncSepolia)}
+						chain={defineChain(sepolia)}
 						connectButton={{
 							label: "Conectar Wallet",
 							style: {
@@ -191,167 +187,71 @@ function App() {
 									</h2>
 									{/* Bodega y Nombre de la botella */}
 									<div className="grid grid-cols-2 gap-4">
-										<FormField
+
+										<CustomFormField
 											control={form.control}
 											name="bodega"
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel className="text-sm font-medium">
-														Bodega
-													</FormLabel>
-													<FormControl>
-														<Input
-															className="w-full"
-															placeholder="Nombre de la bodega"
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
+											type="text"
+											label="Bodega"
+											placeholder="Nombre de la bodega" />
 
-										<FormField
+										<CustomFormField
 											control={form.control}
 											name="botella"
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel className="text-sm font-medium">
-														Nombre de la botella
-													</FormLabel>
-													<FormControl>
-														<Input
-															className="w-full"
-															placeholder="Nombre de la botella"
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
+											type="text"
+											label="Nombre de la botella"
+											placeholder="Nombre de la botella" />
+
 									</div>
 
 									<h2 className="text-lg font-bold mt-4">Análisis del vino</h2>
 									<div className="grid grid-cols-2 gap-4">
-										<FormField
+
+										<CustomFormField
 											control={form.control}
 											name="cobre"
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel className="text-sm font-medium">
-														Cobre (mg/L)
-													</FormLabel>
-													<FormControl>
-														<Input
-															className="w-full"
-															placeholder="Ingrese valor"
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
+											type="text"
+											label="Cobre (mg/L)"
+											placeholder="Ingrese valor" />
 
-										<FormField
+										<CustomFormField
 											control={form.control}
 											name="cadmio"
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel className="text-sm font-medium">
-														Cadmio (mg/L)
-													</FormLabel>
-													<FormControl>
-														<Input
-															className="w-full"
-															placeholder="Ingrese valor"
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
+											type="text"
+											label="Cadmio (mg/L)"
+											placeholder="Ingrese valor" />
 
-										<FormField
+										<CustomFormField
 											control={form.control}
 											name="arsenico"
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel className="text-sm font-medium">
-														Arsénico (mg/L)
-													</FormLabel>
-													<FormControl>
-														<Input
-															className="w-full"
-															placeholder="Ingrese valor"
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
+											type="text"
+											label="Arsénico (mg/L)"
+											placeholder="Ingrese valor" />
 
-										<FormField
+										<CustomFormField
 											control={form.control}
 											name="plomo"
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel className="text-sm font-medium">
-														Plomo (mg/L)
-													</FormLabel>
-													<FormControl>
-														<Input
-															className="w-full"
-															placeholder="Ingrese valor"
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
+											type="text"
+											label="Plomo (mg/L)"
+											placeholder="Ingrese valor" />
 
-										<FormField
+										<CustomFormField
 											control={form.control}
 											name="zinc"
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel className="text-sm font-medium">
-														Cinc (mg/L)
-													</FormLabel>
-													<FormControl>
-														<Input
-															className="w-full"
-															placeholder="Ingrese valor"
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-										<FormField
+											type="text"
+											label="Zinc (mg/L)"
+											placeholder="Ingrese valor" />
+
+
+										<CustomFormField
 											control={form.control}
-											name="zinc"
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel className="text-sm font-medium">
-														Acidez Volátil (g/L)
-													</FormLabel>
-													<FormControl>
-														<Input
-															className="w-full"
-															placeholder="Ingrese valor"
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
+											name="acidoVolatil"
+											type="text"
+											label="Acidez Volátil (mg/L)"
+											placeholder="Ingrese valor" />
+
+
+
 									</div>
 
 									<div className="flex justify-end">
