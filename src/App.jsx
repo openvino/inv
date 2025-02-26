@@ -11,7 +11,7 @@ import { client } from "./config/thirdwebClient";
 import { ConnectButton, useActiveAccount } from "thirdweb/react";
 import { getContract, prepareContractCall, sendTransaction } from "thirdweb";
 import { invAbi } from "./utils/abi";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import CryptoJS from "crypto-js";
 import CustomFormField from "./components/CustomFormField/CustomFormField";
 
