@@ -45,14 +45,14 @@ function App() {
 	const form = useForm({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			bodega: "Costaflores",
-			botella: "MTB20",
-			cobre: "5",
-			cadmio: "5",
-			arsenico: "5",
-			plomo: "5",
-			zinc: "5",
-			acidoVolatil: "5",
+			bodega: "",
+			botella: "",
+			cobre: "",
+			cadmio: "",
+			arsenico: "",
+			plomo: "",
+			zinc: "",
+			acidoVolatil: "",
 		},
 	});
 	const generateHash = (data) => {
